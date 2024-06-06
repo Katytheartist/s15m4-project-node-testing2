@@ -19,6 +19,10 @@ afterAll(async ()=>{
     db.destroy()
 })
 
+it('correct env var', ()=>{
+    expect(process.env.DB_ENV).toBe('testing')
+})
+
 describe('joy model functions', ()=>{
     describe('creates joy', ()=>{
         test('adds joy to db', async ()=>{
@@ -27,9 +31,10 @@ describe('joy model functions', ()=>{
             joyz=await db('joy')
             expect(joyz).toHaveLength(1)
         })
+        test('inserts joy action and feeling', async ()=>{
+            const joy = await Joy.createJoy(joy1)
+            expect(joy).toMatchObject({joy_id: 1, ...joy})
+        })
     })
+    describe('[DELETE]')
 })
-
-    it('correct env var', ()=>{
-        expect(process.env.DB_ENV).toBe('testing')
-    })
