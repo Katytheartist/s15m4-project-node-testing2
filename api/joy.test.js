@@ -36,5 +36,19 @@ describe('joy model functions', ()=>{
             expect(joy).toMatchObject({joy_id: 1, ...joy})
         })
     })
-    describe('[DELETE]')
+    describe('[DELETE] deletes joy', ()=>{
+        test('removes joy entry from db', async ()=>{
+            const [joy_id] = await db('joy').insert(joy1)
+            let joy = await db('joy').where({joy_id}).first()
+            expect(joy).toBeTruthy()
+            await request(server).delete('/joy/'+ joy_id)
+            joy = await db('joy').where({joy_id}).first()
+            expect(joy).toBeFalsy() 
+        })
+        test('responds with deleted joy', async ()=>{
+            await db('joy').insert(joy1)
+            let joy = await request(server).delete('/joy/1')
+            expect(joy.body).toMatchObject(joy1)
+        })
+    })
 })

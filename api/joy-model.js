@@ -5,6 +5,13 @@ async function createJoy(makeJoy){
     return db('joy').where('joy_id', id).first()
 }
 
+async function deleteJoy(id){
+    const deletedJoy = await db('joy').where('joy_id', id).first()
+    await db('joy').where('joy_id', id).del()
+    return deletedJoy
+}
+
 module.exports = {
-    createJoy
+    createJoy,
+    deleteJoy
 }
